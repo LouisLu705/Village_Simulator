@@ -16,45 +16,69 @@ class Player:
         self.luck = (random.randint(0,20))
         self.defense = (random.randint(0,20))
         self.speed = (random.randint(0,20))
+            
         
-        
-        
-    def move(self):
+    def move(self, board):
+        print_bd = True
         while (True):
-            exit = False
-            print("Please enter a direction: (North, East, South, West)")
+            if (print_bd):
+                board.print_current_state()
+            print_bd = True
+            print("\nPlease enter a direction: (North, East, South, West)")
             direction = input()
             lowercase_dir = direction.lower()
-            if (direction == "north"):
-                self.move = lowercase_dir
-                break
-            elif (direction == "east"):
-                self.move = lowercase_dir
-                break
-            elif (direction == "south"):
-                self.move = lowercase_dir
-                break
-            elif (direction == "west"):
-                self.move = lowercase_dir
+            if (lowercase_dir == "north"):
+                board.current_state[board.y][board.x]='.'
+                board.y=board.y-1
+            elif (lowercase_dir == "east"):
+                board.current_state[board.y][board.x]='.'
+                board.x=board.x-1
+            elif (lowercase_dir == "south"):
+                board.current_state[board.y][board.x]='.'
+                board.y=board.y+1
+            elif (lowercase_dir == "west"):
+                board.current_state[board.y][board.x]='.'
+                board.x=board.x+1
+            elif (lowercase_dir == "exit"):
                 break
             else:
-                print("unknown direction {} entered".format(direction))
+                print("unknown direction \'{}\' entered".format(direction))
+                print_bd = False
+            board.current_state[board.y][board.x]='P'
                             
-
-def print_current_state(current_state):
-    print('-'*22)
-    state_size = len(current_state)
-    for rows in range(state_size):
-        for cols in range(state_size):
-            if (cols==0):
-                print('|', end='')
-            print(current_state[rows][cols], sep=' ', end= ' ')
-            if (cols==2 or cols==5):
-                print('|', end = '')
-        print('|')
-        if (rows==2 or rows==5):
-            print('-'*22)
-    print('-'*22)
+class Board:
+    def __init__(self):
+        self.current_state=[ [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
+                             [ '.', '.', '.', '.', '.', '.', '.', '.', '.'] ] 
+        self.x = random.randint(0,8)
+        self.y = random.randint(0,8)
+        
+        #Note the first element in a 2d list represents the "row" so the first "[]" 
+        #is the y position in the board state.
+        self.current_state[self.y][self.x]='P'
+        
+        
+    def print_current_state(self):
+        print('-'*22)
+        state_size = len(self.current_state)
+        for rows in range(state_size):
+            for cols in range(state_size):
+                if (cols==0):
+                    print('|', end='')
+                print(self.current_state[rows][cols], sep=' ', end= ' ')
+                if (cols==2 or cols==5):
+                    print('|', end = '')
+            print('|')
+            if (rows==2 or rows==5):
+                print('-'*22)
+        print('-'*22)
 
 def start():
     """
@@ -87,21 +111,23 @@ def start():
     
     
 def main():
-    start()
+    # print out start() text to introduce the player to the setting
+    start()  
     
-    current_state = [ [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-                      [ '.', '.', '.', '.', '.', '.', '.', '.', '.'] ]    
-    
+    # board and player object for the rest of the instance
+    bd_state = Board()
     Character = Player()
+        
     
-
+    while (True):
+        cmd=input()
+        
+        if (cmd == "exit"):
+            break
+        elif (cmd == "move"):
+            Character.move(bd_state)
+        
+        
 """
 Beginning driver code
 """
